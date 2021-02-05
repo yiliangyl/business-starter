@@ -12,6 +12,9 @@ import lombok.Getter;
 public enum ResponseEnum {
     SUCCESS(1, "成功"),
     FAIL(0, "失败"),
+
+    // 用户模块错误
+    USER_EXIST(1001, "用户已存在"),
     ;
 
     /**

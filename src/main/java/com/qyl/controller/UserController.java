@@ -6,6 +6,7 @@ import com.qyl.utils.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
 
 /**
  * @Author: qyl
@@ -24,7 +25,7 @@ public class UserController {
      * @return
      */
     @PostMapping("/register")
-    public ResponseEntity<Void> register(User user) {
+    public ResponseEntity<Void> register(@Valid User user) {
         return userService.register(user);
     }
 

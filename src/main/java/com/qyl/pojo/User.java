@@ -1,5 +1,6 @@
 package com.qyl.pojo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
@@ -33,5 +34,6 @@ public class User {
     @Pattern(regexp = "^1[35678]\\d{9}$", message = "手机格式不正确")
     private String phone;
 
+    @JsonFormat(pattern = "yyyy/MM/dd HH:mm", timezone = "Asia/Shanghai")
     private Date created;   // 创建时间
 }
