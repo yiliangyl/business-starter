@@ -1,10 +1,11 @@
 package com.qyl.controller;
 
-import com.qyl.enums.ResponseEnum;
-import com.qyl.utils.ResultMessage;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.qyl.pojo.User;
+import com.qyl.service.UserService;
+import com.qyl.utils.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
 
 /**
  * @Author: qyl
@@ -14,8 +15,26 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/user")
 public class UserController {
 
-    @GetMapping("/ping")
-    public ResultMessage ping() {
-        return ResultMessage.success(ResponseEnum.SUCCESS.getCode(), ResponseEnum.SUCCESS.getMsg(), "pong");
+    @Resource
+    private UserService userService;
+
+    /**
+     * 用户注册
+     * @param user
+     * @return
+     */
+    @PostMapping("/register")
+    public ResponseEntity<Void> register(User user) {
+        return userService.register(user);
+    }
+
+    /**
+     * 通过用户名查询用户
+     * @param username
+     * @return
+     */
+    @GetMapping("/query/{username}")
+    public  ResponseEntity<User> queryUserByName(@PathVariable("username") String username) {
+        return userService.queryUserByName(username);
     }
 }

@@ -1,11 +1,11 @@
 package com.qyl.mapper;
 
-import org.apache.ibatis.annotations.Mapper;
+import com.qyl.pojo.User;
+import tk.mybatis.mapper.common.Mapper;
 
 /**
  * @Author: qyl
  * @Date: 2020/12/7 9:49
  */
-@Mapper
-public interface UserMapper {
+public interface UserMapper extends Mapper<User> {
 }
