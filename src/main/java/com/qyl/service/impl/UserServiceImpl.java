@@ -28,11 +28,13 @@ public class UserServiceImpl implements UserService {
             return ResponseEntity.error(ResponseEnum.USER_EXIST.getCode(), ResponseEnum.USER_EXIST.getMsg());
         }
         try {
+            // 密码加密
             user.setPassword(PwdEncoderUtil.encodeByMD5(user.getPassword()));
             user.setCreated(new Date());
             userMapper.insertSelective(user);
             return ResponseEntity.ok();
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.fail();
         }
     }

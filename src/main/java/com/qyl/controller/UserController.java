@@ -3,10 +3,10 @@ package com.qyl.controller;
 import com.qyl.pojo.User;
 import com.qyl.service.UserService;
 import com.qyl.utils.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import javax.validation.Valid;
 
 /**
  * @Author: qyl
@@ -25,7 +25,7 @@ public class UserController {
      * @return
      */
     @PostMapping("/register")
-    public ResponseEntity<Void> register(@Valid User user) {
+    public ResponseEntity<Void> register(@Validated @RequestBody User user) {
         return userService.register(user);
     }
 
