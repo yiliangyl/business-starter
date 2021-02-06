@@ -16,6 +16,7 @@ public enum ResponseEnum {
     // 用户模块错误
     USER_EXIST(1001, "用户已存在"),
     CODE_IS_INCORRECT(1002, "验证码不正确"),
+    LOGIN_ERROR(1003, "手机号或密码错误"),
     ;
 
     /**

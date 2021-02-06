@@ -66,4 +66,15 @@ public class UserController {
             @NotBlank(message = "验证码不能为空") String verificationCode) {
         return userService.checkVerificationCode(phone, verificationCode);
     }
+
+    /**
+     * 用户登录
+     * @param phone
+     * @param password
+     * @return
+     */
+    @PostMapping("/login")
+    public ResponseEntity<User> login(String phone, String password) {
+        return userService.login(phone, password);
+    }
 }

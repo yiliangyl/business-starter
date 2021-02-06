@@ -81,6 +81,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseEntity<User> login(String phone, String password) {
-        return null;
+        try {
+            User record = new User();
+            record.setPhone(phone);
+            record.setPassword(PwdEncoderUtil.encodeByMD5(password));
+            User user = userMapper.selectOne(record);
+            if (user != null) {
+                return ResponseEntity.ok(user);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ResponseEntity.error(ResponseEnum.LOGIN_ERROR.getCode(), ResponseEnum.LOGIN_ERROR.getMsg());
     }
 }
