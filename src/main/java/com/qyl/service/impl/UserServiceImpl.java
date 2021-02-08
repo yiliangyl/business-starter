@@ -5,12 +5,15 @@ import com.qyl.mapper.UserMapper;
 import com.qyl.pojo.User;
 import com.qyl.service.UserService;
 import com.qyl.utils.ResponseEntity;
+import com.qyl.utils.component.CookieUtil;
 import com.qyl.utils.component.GenerateCodeUtil;
 import com.qyl.utils.component.PwdEncoderUtil;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -27,15 +30,19 @@ public class UserServiceImpl implements UserService {
     @Resource
     private RedisTemplate<String, String> redisTemplate;
 
-    public static final String KEY_PREFIX = "user:code:phone:";
+    private static final String KEY_PREFIX = "user:code:phone:";
+
+    private static final String COOKIE_NAME = "USER_PHONE";
 
     @Override
-    public ResponseEntity<Void> register(User user) {
+    public ResponseEntity<Void> register(User user, HttpServletRequest request) {
         // 通过用户名判断用户是否存在
         if (userMapper.selectByName(user.getUsername()) != null) {
             return ResponseEntity.error(ResponseEnum.USER_EXIST.getCode(), ResponseEnum.USER_EXIST.getMsg());
         }
         try {
+            // 通过cookie获得手机号
+            user.setPhone(CookieUtil.getCookie(request, COOKIE_NAME));
             // 密码加密
             user.setPassword(PwdEncoderUtil.encodeByMD5(user.getPassword()));
             user.setCreated(new Date());
@@ -71,9 +78,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<Void> checkVerificationCode(String phone, String verificationCode) {
+    public ResponseEntity<Void> checkVerificationCode(HttpServletResponse response, String phone, String verificationCode) {
         if (verificationCode.equals(redisTemplate.opsForValue().get(KEY_PREFIX + phone))) {
             redisTemplate.delete(KEY_PREFIX + phone);
+            CookieUtil.setCookie(response, COOKIE_NAME, phone, 5 * 60);
             return ResponseEntity.ok();
         }
         return ResponseEntity.error(ResponseEnum.CODE_IS_INCORRECT.getCode(), ResponseEnum.CODE_IS_INCORRECT.getMsg());

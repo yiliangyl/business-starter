@@ -8,7 +8,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 /**
  * @Author: qyl
  * @Date: 2021/2/7 13:02
- * @Description:
+ * @Description: 跨域配置类
  */
 @Configuration
 public class CrossOriginConfig {
@@ -21,6 +21,7 @@ public class CrossOriginConfig {
                 registry.addMapping("/**")
                         .allowedHeaders("*")
                         .allowedMethods("*")
+                        .allowCredentials(true)
                         .allowedOrigins("*");
             }
         };

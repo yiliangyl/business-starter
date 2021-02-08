@@ -35,6 +35,33 @@ public class CookieUtil {
     }
 
     /**
+     * 获得Cookie
+     * @param request
+     * @param cookieName
+     * @return
+     */
+    public static String getCookie(HttpServletRequest request, String cookieName) {
+        Cookie[] cookies = request.getCookies();
+        System.out.println(cookies == null);
+        for (Cookie cookie : cookies) {
+            if (cookie.getName().equals(cookieName)) {
+                 String cookieValue = cookie.getValue();
+                 deleteCookie(cookieName);
+                 return cookieValue;
+            }
+        }
+        return null;
+    }
+
+    private static void deleteCookie(String cookieName) {
+        // 删除之前要先new一个name相同value为空的cookie
+        Cookie cookie = new Cookie(cookieName, null);
+        // 路径要一样，生命周期要为0
+        cookie.setPath("/");
+        cookie.setMaxAge(0);
+    }
+
+    /**
      * 删除cookie
      * @param request
      * @param cookieName

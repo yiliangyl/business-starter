@@ -3,6 +3,9 @@ package com.qyl.service;
 import com.qyl.pojo.User;
 import com.qyl.utils.ResponseEntity;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * @Author: qyl
  * @Date: 2020/12/7 9:50
@@ -14,7 +17,7 @@ public interface UserService {
      * @param user
      * @return
      */
-    ResponseEntity<Void> register(User user);
+    ResponseEntity<Void> register(User user, HttpServletRequest request);
 
     /**
      * 通过用户名查询用户
@@ -36,7 +39,7 @@ public interface UserService {
      * @param verificationCode
      * @return
      */
-    ResponseEntity<Void> checkVerificationCode(String phone, String verificationCode);
+    ResponseEntity<Void> checkVerificationCode(HttpServletResponse response, String phone, String verificationCode);
 
     /**
      * 用户登录

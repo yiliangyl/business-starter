@@ -7,6 +7,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
@@ -29,8 +31,8 @@ public class UserController {
      * @return
      */
     @PostMapping("/register")
-    public ResponseEntity<Void> register(@Valid @RequestBody User user) {
-        return userService.register(user);
+    public ResponseEntity<Void> register(@Valid @RequestBody User user, HttpServletRequest request) {
+        return userService.register(user, request);
     }
 
     /**
@@ -62,9 +64,10 @@ public class UserController {
      */
     @PostMapping("/check")
     public ResponseEntity<Void> checkVerificationCode(
+            HttpServletResponse response,
             String phone,
             @NotBlank(message = "验证码不能为空") String verificationCode) {
-        return userService.checkVerificationCode(phone, verificationCode);
+        return userService.checkVerificationCode(response, phone, verificationCode);
     }
 
     /**
