@@ -1,5 +1,6 @@
 package com.qyl.controller;
 
+import com.qyl.pojo.PO.TokenPO;
 import com.qyl.pojo.User;
 import com.qyl.service.UserService;
 import com.qyl.utils.ResponseEntity;
@@ -68,7 +69,7 @@ public class UserController {
      * @return
      */
     @PostMapping("/login")
-    public ResponseEntity<User> login(String phone, String password) {
+    public ResponseEntity<TokenPO> login(String phone, String password) {
         return userService.login(phone, password);
     }
 }

@@ -1,5 +1,6 @@
 package com.qyl.service;
 
+import com.qyl.pojo.PO.TokenPO;
 import com.qyl.pojo.User;
 import com.qyl.utils.ResponseEntity;
 
@@ -37,5 +38,5 @@ public interface UserService {
      * @param password
      * @return
      */
-    ResponseEntity<User> login(String phone, String password);
+    ResponseEntity<TokenPO> login(String phone, String password);
 }

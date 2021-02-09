@@ -2,11 +2,13 @@ package com.qyl.service.impl;
 
 import com.qyl.enums.ResponseEnum;
 import com.qyl.mapper.UserMapper;
+import com.qyl.pojo.PO.TokenPO;
 import com.qyl.pojo.User;
 import com.qyl.service.UserService;
 import com.qyl.utils.ResponseEntity;
 import com.qyl.utils.component.GenerateCodeUtil;
 import com.qyl.utils.component.PwdEncoderUtil;
+import com.qyl.utils.component.TokenUtil;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -77,14 +79,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<User> login(String phone, String password) {
+    public ResponseEntity<TokenPO> login(String phone, String password) {
         try {
             User record = new User();
             record.setPhone(phone);
             record.setPassword(PwdEncoderUtil.encodeByMD5(password));
             User user = userMapper.selectOne(record);
             if (user != null) {
-                return ResponseEntity.ok(user);
+                TokenPO tokenPO = new TokenPO(TokenUtil.genToken(user.getUserId()), user);
+                return ResponseEntity.ok(tokenPO);
             }
         } catch (Exception e) {
             e.printStackTrace();

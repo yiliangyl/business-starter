@@ -38,7 +38,7 @@ public class TokenUtil {
      * 验证token
      * 若验证出错将会抛出异常
      * @param token
-     * @return 用户信息（userId）
+     * @return 用户信息(userId)
      */
     public static String verifyToken(String token) {
         return JWT.require(Algorithm.HMAC256(signature))

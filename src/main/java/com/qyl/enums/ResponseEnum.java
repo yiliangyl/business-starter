@@ -17,6 +17,7 @@ public enum ResponseEnum {
     USER_EXIST(1001, "用户已存在"),
     CODE_IS_INCORRECT(1002, "验证码不正确"),
     LOGIN_ERROR(1003, "手机号或密码错误"),
+    TOKEN_ERROR(1004, "token出错"),
     ;
 
     /**
