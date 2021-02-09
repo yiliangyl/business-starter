@@ -7,11 +7,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 /**
  * @Author: qyl
@@ -27,12 +25,20 @@ public class UserController {
 
     /**
      * 用户注册
-     * @param user
+     * @param phone
+     * @param verificationCode
+     * @param username
+     * @param password
      * @return
      */
     @PostMapping("/register")
-    public ResponseEntity<Void> register(@Valid @RequestBody User user, HttpServletRequest request) {
-        return userService.register(user, request);
+    public ResponseEntity<Void> register(
+            @Pattern(regexp = "^1[35678]\\d{9}$", message = "手机格式不正确") String phone,
+            String verificationCode,
+            @Size(min = 2, max = 20, message = "用户名应在2~20位") String username,
+            @Size(min = 6, max = 20, message = "密码应在6~20位") String password) {
+        User user = new User(username, password, phone);
+        return userService.register(user, verificationCode);
     }
 
     /**
@@ -54,20 +60,6 @@ public class UserController {
     public ResponseEntity<String> sendVerificationCode(
             @Pattern(regexp = "^1[35678]\\d{9}$", message = "手机格式不正确") String phone) {
         return userService.sendVerificationCode(phone);
-    }
-
-    /**
-     * 校验验证码
-     * @param phone
-     * @param verificationCode
-     * @return
-     */
-    @PostMapping("/check")
-    public ResponseEntity<Void> checkVerificationCode(
-            HttpServletResponse response,
-            String phone,
-            @NotBlank(message = "验证码不能为空") String verificationCode) {
-        return userService.checkVerificationCode(response, phone, verificationCode);
     }
 
     /**
