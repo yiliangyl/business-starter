@@ -58,9 +58,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseEntity<User> queryUserByName(String username) {
-        User record = new User();
-        record.setUsername(username);
-        User user = userMapper.selectOne(record);
+        User user = userMapper.selectByName(username);
         if (user != null) {
             return ResponseEntity.ok(user);
         }

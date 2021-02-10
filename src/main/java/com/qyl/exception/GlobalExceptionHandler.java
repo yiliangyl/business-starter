@@ -25,8 +25,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<Void> validatorErrorHandler(ConstraintViolationException ex) {
-//        String msg = ex.getMessage().split(": ")[1];
-        String msg = ex.getMessage();
+        String msg = ex.getMessage().split(": ")[1];
         return ResponseEntity.error(ResponseEnum.FAIL.getCode(), msg);
     }
 }
