@@ -20,18 +20,33 @@ import java.util.Date;
 @NoArgsConstructor
 public class User {
 
+    /**
+     * 用户ID
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer userId;
 
+    /**
+     * 用户名
+     */
     private String username;
 
+    /**
+     * 用户密码
+     */
     private String password;
 
+    /**
+     * 用户手机号
+     */
     private String phone;
 
+    /**
+     * 创建时间
+     */
     @JsonFormat(pattern = "yyyy/MM/dd HH:mm", timezone = "Asia/Shanghai")
-    private Date created;   // 创建时间
+    private Date created;
 
     public User(String username, String password, String phone) {
         this.username = username;

@@ -26,11 +26,12 @@ public class ValidatorConfig {
                 .buildValidatorFactory();
         return validatorFactory.getValidator();
     }
-
-//    @Bean
-//    public MethodValidationPostProcessor methodValidationPostProcessor() {
-//        MethodValidationPostProcessor postProcessor = new MethodValidationPostProcessor();
-//        postProcessor.setValidator(validator());
-//        return postProcessor;
-//    }
+/*
+    @Bean
+    public MethodValidationPostProcessor methodValidationPostProcessor() {
+        MethodValidationPostProcessor postProcessor = new MethodValidationPostProcessor();
+        postProcessor.setValidator(validator());
+        return postProcessor;
+    }
+ */
 }

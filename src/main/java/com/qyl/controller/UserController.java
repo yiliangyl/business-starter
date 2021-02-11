@@ -26,7 +26,7 @@ public class UserController {
     /**
      * 用户注册
      * @param phone
-     * @param verificationCode
+     * @param verificationCode 验证码
      * @param username
      * @param password
      * @return

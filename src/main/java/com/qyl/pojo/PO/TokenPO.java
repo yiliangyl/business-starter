@@ -15,7 +15,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class TokenPO {
 
+    /**
+     * 用户token
+     */
     private String token;
 
+    /**
+     * 用户
+     */
     private User user;
 }

@@ -1,6 +1,5 @@
 package com.qyl.config;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -11,19 +10,14 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * @Description: 跨域配置类
  */
 @Configuration
-public class CrossOriginConfig {
+public class CrossOriginConfig implements WebMvcConfigurer {
 
-    @Bean
-    public WebMvcConfigurer webMvcConfigurer() {
-        return new WebMvcConfigurer() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**")
-                        .allowedHeaders("*")
-                        .allowedMethods("*")
-                        .allowCredentials(true)
-                        .allowedOrigins("*");
-            }
-        };
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedHeaders("*")
+                .allowedMethods("*")
+                .allowCredentials(true)
+                .allowedOrigins("*");
     }
 }
