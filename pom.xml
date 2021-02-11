@@ -19,6 +19,21 @@
     </properties>
 
     <dependencies>
+        <!--生成api文档-->
+        <dependency>
+            <groupId>com.github.shalousun</groupId>
+            <artifactId>smart-doc</artifactId>
+            <version>1.9.4</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!--druid-->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+            <version>1.1.23</version>
+        </dependency>
+
         <!--jwt-->
         <dependency>
             <groupId>com.auth0</groupId>
