@@ -12,8 +12,10 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 /**
+ * 用户相关接口
  * @Author: qyl
  * @Date: 2020/12/7 9:53
+ * @Description: 用户相关接口
  */
 @RestController
 @RequestMapping("/user")
