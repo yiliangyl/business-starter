@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService {
             user.setPhone(user.getPhone());
             // 密码加密
             user.setPassword(PwdEncoderUtil.encodeByMD5(user.getPassword()));
-            user.setCreated(new Date());
+            user.setCreateTime(new Date());
             // 写入数据库
             userMapper.insertSelective(user);
             redisTemplate.delete(KEY_PREFIX + user.getPhone());

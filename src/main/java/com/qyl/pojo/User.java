@@ -46,7 +46,7 @@ public class User {
      * 创建时间
      */
     @JsonFormat(pattern = "yyyy/MM/dd HH:mm", timezone = "Asia/Shanghai")
-    private Date created;
+    private Date createTime;
 
     public User(String username, String password, String phone) {
         this.username = username;
