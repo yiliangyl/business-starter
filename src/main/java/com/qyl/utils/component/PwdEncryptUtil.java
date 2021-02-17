@@ -10,7 +10,7 @@ import java.security.MessageDigest;
  * @Author: qyl
  * @Date: 2021/2/5 11:22
  */
-public class PwdEncoderUtil {
+public class PwdEncryptUtil {
 
     /**
      * 密码加密

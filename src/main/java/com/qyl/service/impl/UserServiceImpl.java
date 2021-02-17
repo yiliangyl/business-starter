@@ -7,7 +7,7 @@ import com.qyl.pojo.User;
 import com.qyl.service.UserService;
 import com.qyl.utils.ResponseEntity;
 import com.qyl.utils.component.GenerateCodeUtil;
-import com.qyl.utils.component.PwdEncoderUtil;
+import com.qyl.utils.component.PwdEncryptUtil;
 import com.qyl.utils.component.TokenUtil;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -44,7 +44,7 @@ public class UserServiceImpl implements UserService {
         try {
             user.setPhone(user.getPhone());
             // 密码加密
-            user.setPassword(PwdEncoderUtil.encodeByMD5(user.getPassword()));
+            user.setPassword(PwdEncryptUtil.encodeByMD5(user.getPassword()));
             user.setCreateTime(new Date());
             // 写入数据库
             userMapper.insertSelective(user);
@@ -81,7 +81,7 @@ public class UserServiceImpl implements UserService {
         try {
             User record = new User();
             record.setPhone(phone);
-            record.setPassword(PwdEncoderUtil.encodeByMD5(password));
+            record.setPassword(PwdEncryptUtil.encodeByMD5(password));
             User user = userMapper.selectOne(record);
             if (user != null) {
                 TokenPO tokenPO = new TokenPO(TokenUtil.genToken(user.getUserId()), user);
