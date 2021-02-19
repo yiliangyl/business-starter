@@ -31,10 +31,10 @@ public class UserController {
      * @param verificationCode 验证码
      * @param username
      * @param password
-     * @return
+     * @return 根据用户手机号生成的 token
      */
     @PostMapping("/register")
-    public ResponseEntity<Void> register(
+    public ResponseEntity<String> register(
             @Pattern(regexp = "^1[35678]\\d{9}$", message = "手机格式不正确") String phone,
             String verificationCode,
             @Size(min = 2, max = 20, message = "用户名应在2~20位") String username,

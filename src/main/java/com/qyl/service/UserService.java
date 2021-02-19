@@ -16,7 +16,7 @@ public interface UserService {
      * @param verificationCode
      * @return
      */
-    ResponseEntity<Void> register(User user, String verificationCode);
+    ResponseEntity<String> register(User user, String verificationCode);
 
     /**
      * 通过用户名查询用户

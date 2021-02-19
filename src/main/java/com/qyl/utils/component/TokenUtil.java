@@ -18,16 +18,16 @@ public class TokenUtil {
 
     /**
      * 通过用户ID生成token
-     * @param userId
+     * @param phone
      * @return
      */
-    public static String genToken(Integer userId) {
+    public static String genToken(String phone) {
         String token;
         Calendar instance = Calendar.getInstance();
         instance.add(Calendar.DATE, 7);  // 默认7天过期
 
         token = JWT.create()
-                .withClaim(PAYLOAD_NAME, String.valueOf(userId))
+                .withClaim(PAYLOAD_NAME, phone)
                 .withExpiresAt(instance.getTime())  // 指定token过期时间
                 .sign(Algorithm.HMAC256(signature));
 

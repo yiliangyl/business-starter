@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
     private static final String KEY_PREFIX = "user:phone:code:";
 
     @Override
-    public ResponseEntity<Void> register(User user, String verificationCode) {
+    public ResponseEntity<String> register(User user, String verificationCode) {
         // 校验验证码
         if (!verificationCode.equals(redisTemplate.opsForValue().get(KEY_PREFIX + user.getPhone()))) {
             return ResponseEntity.error(ResponseEnum.CODE_IS_INCORRECT.getCode(), ResponseEnum.CODE_IS_INCORRECT.getMsg());
@@ -49,7 +49,9 @@ public class UserServiceImpl implements UserService {
             // 写入数据库
             userMapper.insertSelective(user);
             redisTemplate.delete(KEY_PREFIX + user.getPhone());
-            return ResponseEntity.ok();
+            // 返回token
+            String token = TokenUtil.genToken(user.getPhone());
+            return ResponseEntity.ok(token);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -84,7 +86,7 @@ public class UserServiceImpl implements UserService {
             record.setPassword(PwdEncryptUtil.encodeByMD5(password));
             User user = userMapper.selectOne(record);
             if (user != null) {
-                TokenPO tokenPO = new TokenPO(TokenUtil.genToken(user.getUserId()), user);
+                TokenPO tokenPO = new TokenPO(TokenUtil.genToken(phone), user);
                 return ResponseEntity.ok(tokenPO);
             }
         } catch (Exception e) {
