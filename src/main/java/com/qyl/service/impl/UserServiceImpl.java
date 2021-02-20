@@ -9,7 +9,7 @@ import com.qyl.utils.ResponseEntity;
 import com.qyl.utils.component.GenerateCodeUtil;
 import com.qyl.utils.component.PwdEncryptUtil;
 import com.qyl.utils.component.TokenUtil;
-import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -27,14 +27,14 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
 
     @Resource
-    private RedisTemplate<String, String> redisTemplate;
+    private StringRedisTemplate stringRedisTemplate;
 
     private static final String KEY_PREFIX = "user:phone:code:";
 
     @Override
     public ResponseEntity<String> register(User user, String verificationCode) {
         // 校验验证码
-        if (!verificationCode.equals(redisTemplate.opsForValue().get(KEY_PREFIX + user.getPhone()))) {
+        if (!verificationCode.equals(stringRedisTemplate.opsForValue().get(KEY_PREFIX + user.getPhone()))) {
             return ResponseEntity.error(ResponseEnum.CODE_IS_INCORRECT.getCode(), ResponseEnum.CODE_IS_INCORRECT.getMsg());
         }
         // 通过用户名判断用户是否存在
@@ -48,7 +48,7 @@ public class UserServiceImpl implements UserService {
             user.setCreateTime(new Date());
             // 写入数据库
             userMapper.insertSelective(user);
-            redisTemplate.delete(KEY_PREFIX + user.getPhone());
+            stringRedisTemplate.delete(KEY_PREFIX + user.getPhone());
             // 返回token
             String token = TokenUtil.genToken(user.getPhone());
             return ResponseEntity.ok(token);
@@ -74,7 +74,7 @@ public class UserServiceImpl implements UserService {
             return ResponseEntity.error(ResponseEnum.USER_EXIST.getCode(), ResponseEnum.USER_EXIST.getMsg());
         }
         String code = GenerateCodeUtil.generateCode(6);
-        redisTemplate.opsForValue().set(KEY_PREFIX + phone, code, 5, TimeUnit.MINUTES);
+        stringRedisTemplate.opsForValue().set(KEY_PREFIX + phone, code, 5, TimeUnit.MINUTES);
         return ResponseEntity.ok(code);
     }
 

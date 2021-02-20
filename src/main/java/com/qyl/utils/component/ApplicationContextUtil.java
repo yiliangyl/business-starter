@@ -22,6 +22,7 @@ public class ApplicationContextUtil implements ApplicationContextAware {
 
     /**
      * 用于获取 bean (例如 redisTemplate)
+     * 默认规则：类名第一个字母小写
      * @param name
      * @return
      */
