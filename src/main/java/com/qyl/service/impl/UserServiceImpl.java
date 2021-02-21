@@ -6,7 +6,7 @@ import com.qyl.pojo.PO.TokenPO;
 import com.qyl.pojo.User;
 import com.qyl.service.UserService;
 import com.qyl.utils.ResponseEntity;
-import com.qyl.utils.component.GenerateCodeUtil;
+import com.qyl.utils.component.VerifyCodeUtil;
 import com.qyl.utils.component.PwdEncryptUtil;
 import com.qyl.utils.component.TokenUtil;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -32,9 +32,9 @@ public class UserServiceImpl implements UserService {
     private static final String KEY_PREFIX = "user:phone:code:";
 
     @Override
-    public ResponseEntity<String> register(User user, String verificationCode) {
+    public ResponseEntity<String> register(User user, String verifyCode) {
         // 校验验证码
-        if (!verificationCode.equals(stringRedisTemplate.opsForValue().get(KEY_PREFIX + user.getPhone()))) {
+        if (!verifyCode.equals(stringRedisTemplate.opsForValue().get(KEY_PREFIX + user.getPhone()))) {
             return ResponseEntity.error(ResponseEnum.CODE_IS_INCORRECT.getCode(), ResponseEnum.CODE_IS_INCORRECT.getMsg());
         }
         // 通过用户名判断用户是否存在
@@ -73,7 +73,7 @@ public class UserServiceImpl implements UserService {
         if (userMapper.selectByPhone(phone) != null) {
             return ResponseEntity.error(ResponseEnum.USER_EXIST.getCode(), ResponseEnum.USER_EXIST.getMsg());
         }
-        String code = GenerateCodeUtil.generateCode(6);
+        String code = VerifyCodeUtil.generateCode(6);
         stringRedisTemplate.opsForValue().set(KEY_PREFIX + phone, code, 5, TimeUnit.MINUTES);
         return ResponseEntity.ok(code);
     }

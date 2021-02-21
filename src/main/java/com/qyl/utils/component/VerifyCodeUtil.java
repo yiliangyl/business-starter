@@ -7,7 +7,7 @@ import java.util.Random;
  * @Date: 2021/2/5 20:45
  * @Description: 生成验证码工具类
  */
-public class GenerateCodeUtil {
+public class VerifyCodeUtil {
 
     /**
      * 随机生成n位数验证码

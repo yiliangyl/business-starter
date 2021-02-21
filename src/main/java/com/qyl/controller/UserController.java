@@ -28,7 +28,7 @@ public class UserController {
     /**
      * 用户注册
      * @param phone
-     * @param verificationCode 验证码
+     * @param verifyCode 验证码
      * @param username
      * @param password
      * @return 根据用户手机号生成的 token
@@ -36,11 +36,11 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity<String> register(
             @Pattern(regexp = "^1[35678]\\d{9}$", message = "手机格式不正确") String phone,
-            String verificationCode,
+            String verifyCode,
             @Size(min = 2, max = 20, message = "用户名应在2~20位") String username,
             @Size(min = 6, max = 20, message = "密码应在6~20位") String password) {
         User user = new User(username, password, phone);
-        return userService.register(user, verificationCode);
+        return userService.register(user, verifyCode);
     }
 
     /**

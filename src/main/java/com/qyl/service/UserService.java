@@ -13,10 +13,10 @@ public interface UserService {
     /**
      * 用户注册
      * @param user
-     * @param verificationCode
+     * @param verifyCode
      * @return
      */
-    ResponseEntity<String> register(User user, String verificationCode);
+    ResponseEntity<String> register(User user, String verifyCode);
 
     /**
      * 通过用户名查询用户
