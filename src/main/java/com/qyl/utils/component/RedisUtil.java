@@ -11,6 +11,10 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
  */
 public class RedisUtil {
 
+    /**
+     * 通过工厂工具类获得 RedisTemplate
+     * @return
+     */
     public static RedisTemplate getRedisTemplate() {
         // 通过工厂工具类获取 redisTemplate
         RedisTemplate  redisTemplate = (RedisTemplate) ApplicationContextUtil.getBean("redisTemplate");
