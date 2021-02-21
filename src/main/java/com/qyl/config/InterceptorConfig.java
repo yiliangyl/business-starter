@@ -17,8 +17,6 @@ public class InterceptorConfig implements WebMvcConfigurer {
         // 拦截除注册和登录以外的所有请求
         registry.addInterceptor(new AuthInterceptor())
                 .addPathPatterns("/**")
-                .excludePathPatterns("/user/login")
-                .excludePathPatterns("/user/register")
-                .excludePathPatterns("/user/send");
+                .excludePathPatterns("/user/**");
     }
 }

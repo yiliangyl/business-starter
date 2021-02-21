@@ -48,8 +48,8 @@ public class UserController {
      * @param username
      * @return
      */
-    @GetMapping("/query/{username}")
-    public ResponseEntity<User> queryUserByName(@PathVariable("username") String username) {
+    @GetMapping("/query")
+    public ResponseEntity<User> queryUserByName(String username) {
         return userService.queryUserByName(username);
     }
 

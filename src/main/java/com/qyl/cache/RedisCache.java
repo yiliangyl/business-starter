@@ -1,17 +1,15 @@
 package com.qyl.cache;
 
-import com.qyl.utils.component.ApplicationContextUtil;
+import com.qyl.utils.component.RedisUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.cache.Cache;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 import java.util.concurrent.locks.ReadWriteLock;
 
 /**
  * @Author: qyl
  * @Date: 2021/2/10 17:20
- * @Description: 缓存类
+ * @Description: MyBatis缓存类
  */
 @Slf4j
 public class RedisCache implements Cache {
@@ -39,7 +37,7 @@ public class RedisCache implements Cache {
     @Override
     public void putObject(Object key, Object value) {
         log.info("缓存key:[{}], 缓存value:[{}]", key.toString(), value);
-        getRedisTemplate().opsForHash().put(id, key.toString(), value);
+        RedisUtil.getRedisTemplate().opsForHash().put(id, key.toString(), value);
     }
 
     /**
@@ -50,7 +48,7 @@ public class RedisCache implements Cache {
     @Override
     public Object getObject(Object key) {
         log.info("获取缓存key:[{}]", key.toString());
-        return getRedisTemplate().opsForHash().get(id, key.toString());
+        return RedisUtil.getRedisTemplate().opsForHash().get(id, key.toString());
     }
 
     @Override
@@ -64,7 +62,7 @@ public class RedisCache implements Cache {
     @Override
     public void clear() {
         log.info("清除所有缓存");
-        getRedisTemplate().delete(id);
+        RedisUtil.getRedisTemplate().delete(id);
     }
 
     @Override
@@ -75,16 +73,5 @@ public class RedisCache implements Cache {
     @Override
     public ReadWriteLock getReadWriteLock() {
         return null;
-    }
-
-    /**
-     * 封装获取redisTemplate方法
-     * @return
-     */
-    public RedisTemplate getRedisTemplate() {
-        RedisTemplate redisTemplate = (RedisTemplate) ApplicationContextUtil.getBean("redisTemplate");
-        redisTemplate.setKeySerializer(new StringRedisSerializer());
-        redisTemplate.setHashKeySerializer(new StringRedisSerializer());
-        return redisTemplate;
     }
 }
