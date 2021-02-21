@@ -3,6 +3,7 @@ package com.qyl.service;
 import com.qyl.pojo.PO.TokenPO;
 import com.qyl.pojo.User;
 import com.qyl.utils.ResponseEntity;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * @Author: qyl
@@ -14,9 +15,10 @@ public interface UserService {
      * 用户注册
      * @param user
      * @param verifyCode
+     * @param avatar
      * @return
      */
-    ResponseEntity<String> register(User user, String verifyCode);
+    ResponseEntity<String> register(User user, String verifyCode, MultipartFile avatar);
 
     /**
      * 通过用户名查询用户

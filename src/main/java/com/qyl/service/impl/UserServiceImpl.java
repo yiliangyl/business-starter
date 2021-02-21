@@ -4,6 +4,7 @@ import com.qyl.enums.ResponseEnum;
 import com.qyl.mapper.UserMapper;
 import com.qyl.pojo.PO.TokenPO;
 import com.qyl.pojo.User;
+import com.qyl.service.UploadService;
 import com.qyl.service.UserService;
 import com.qyl.utils.ResponseEntity;
 import com.qyl.utils.component.VerifyCodeUtil;
@@ -11,6 +12,7 @@ import com.qyl.utils.component.PwdEncryptUtil;
 import com.qyl.utils.component.TokenUtil;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -27,24 +29,35 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
 
     @Resource
+    private UploadService uploadService;
+
+    @Resource
     private StringRedisTemplate stringRedisTemplate;
 
     private static final String KEY_PREFIX = "user:phone:code:";
 
     @Override
-    public ResponseEntity<String> register(User user, String verifyCode) {
+    public ResponseEntity<String> register(User user, String verifyCode, MultipartFile avatar) {
         // 校验验证码
         if (!verifyCode.equals(stringRedisTemplate.opsForValue().get(KEY_PREFIX + user.getPhone()))) {
             return ResponseEntity.error(ResponseEnum.CODE_IS_INCORRECT.getCode(), ResponseEnum.CODE_IS_INCORRECT.getMsg());
         }
+
         // 通过用户名判断用户是否存在
         if (userMapper.selectByName(user.getUsername()) != null) {
             return ResponseEntity.error(ResponseEnum.USER_EXIST.getCode(), ResponseEnum.USER_EXIST.getMsg());
         }
+
         try {
             user.setPhone(user.getPhone());
             // 密码加密
             user.setPassword(PwdEncryptUtil.encodeByMD5(user.getPassword()));
+
+            // 存储头像
+            String url = uploadService.uploadAvatar(avatar);
+            user.setAvatar(url);
+
+            // 设置用户创建时间
             user.setCreateTime(new Date());
             // 写入数据库
             userMapper.insertSelective(user);

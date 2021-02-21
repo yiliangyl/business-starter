@@ -6,6 +6,7 @@ import com.qyl.service.UserService;
 import com.qyl.utils.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.validation.constraints.Pattern;
@@ -31,16 +32,18 @@ public class UserController {
      * @param verifyCode 验证码
      * @param username
      * @param password
+     * @param avatar
      * @return 根据用户手机号生成的 token
      */
     @PostMapping("/register")
     public ResponseEntity<String> register(
-            @Pattern(regexp = "^1[35678]\\d{9}$", message = "手机格式不正确") String phone,
+            String phone,
             String verifyCode,
             @Size(min = 2, max = 20, message = "用户名应在2~20位") String username,
-            @Size(min = 6, max = 20, message = "密码应在6~20位") String password) {
+            @Size(min = 6, max = 20, message = "密码应在6~20位") String password,
+            MultipartFile avatar) {
         User user = new User(username, password, phone);
-        return userService.register(user, verifyCode);
+        return userService.register(user, verifyCode, avatar);
     }
 
     /**

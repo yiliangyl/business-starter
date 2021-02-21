@@ -1,8 +1,6 @@
 package com.qyl.pojo;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -17,7 +15,6 @@ import java.util.Date;
  */
 @Data
 @Table(name = "user")
-@NoArgsConstructor
 public class User {
 
     /**
@@ -43,10 +40,17 @@ public class User {
     private String phone;
 
     /**
+     * 用户头像储存路径
+     */
+    private String avatar;
+
+    /**
      * 创建时间
      */
-    @JsonFormat(pattern = "yyyy/MM/dd HH:mm", timezone = "Asia/Shanghai")
     private Date createTime;
+
+    public User() {
+    }
 
     public User(String username, String password, String phone) {
         this.username = username;
