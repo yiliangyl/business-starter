@@ -37,7 +37,7 @@ public class RedisCache implements Cache {
     @Override
     public void putObject(Object key, Object value) {
         log.info("缓存key:[{}], 缓存value:[{}]", key.toString(), value);
-        RedisUtil.getRedisTemplate().opsForHash().put(id, key.toString(), value);
+        RedisUtil.putHashValue(id, key.toString(), value);
     }
 
     /**
@@ -48,7 +48,7 @@ public class RedisCache implements Cache {
     @Override
     public Object getObject(Object key) {
         log.info("获取缓存key:[{}]", key.toString());
-        return RedisUtil.getRedisTemplate().opsForHash().get(id, key.toString());
+        return RedisUtil.getHashValue(id, key.toString());
     }
 
     @Override
@@ -62,7 +62,7 @@ public class RedisCache implements Cache {
     @Override
     public void clear() {
         log.info("清除所有缓存");
-        RedisUtil.getRedisTemplate().delete(id);
+        RedisUtil.delete(id);
     }
 
     @Override

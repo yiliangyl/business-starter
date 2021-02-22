@@ -7,10 +7,10 @@ import com.qyl.pojo.User;
 import com.qyl.service.UploadService;
 import com.qyl.service.UserService;
 import com.qyl.utils.ResponseEntity;
+import com.qyl.utils.component.RedisUtil;
 import com.qyl.utils.component.VerifyCodeUtil;
 import com.qyl.utils.component.PwdEncryptUtil;
 import com.qyl.utils.component.TokenUtil;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -31,15 +31,12 @@ public class UserServiceImpl implements UserService {
     @Resource
     private UploadService uploadService;
 
-    @Resource
-    private StringRedisTemplate stringRedisTemplate;
-
     private static final String KEY_PREFIX = "user:phone:code:";
 
     @Override
     public ResponseEntity<String> register(User user, String verifyCode, MultipartFile avatar) {
         // 校验验证码
-        if (!verifyCode.equals(stringRedisTemplate.opsForValue().get(KEY_PREFIX + user.getPhone()))) {
+        if (!verifyCode.equals(RedisUtil.getValue(KEY_PREFIX + user.getPhone()))) {
             return ResponseEntity.error(ResponseEnum.CODE_IS_INCORRECT.getCode(), ResponseEnum.CODE_IS_INCORRECT.getMsg());
         }
 
@@ -61,7 +58,7 @@ public class UserServiceImpl implements UserService {
             user.setCreateTime(new Date());
             // 写入数据库
             userMapper.insertSelective(user);
-            stringRedisTemplate.delete(KEY_PREFIX + user.getPhone());
+            RedisUtil.delete(KEY_PREFIX + user.getPhone());
             // 返回token
             String token = TokenUtil.genToken(user.getPhone());
             return ResponseEntity.ok(token);
@@ -87,7 +84,7 @@ public class UserServiceImpl implements UserService {
             return ResponseEntity.error(ResponseEnum.USER_EXIST.getCode(), ResponseEnum.USER_EXIST.getMsg());
         }
         String code = VerifyCodeUtil.generateCode(6);
-        stringRedisTemplate.opsForValue().set(KEY_PREFIX + phone, code, 5, TimeUnit.MINUTES);
+        RedisUtil.setValue(KEY_PREFIX + phone, code, 5, TimeUnit.MINUTES);
         return ResponseEntity.ok(code);
     }
 

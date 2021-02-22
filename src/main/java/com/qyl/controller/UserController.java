@@ -10,7 +10,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 
 /**
  * 用户相关接口
@@ -28,22 +27,14 @@ public class UserController {
 
     /**
      * 用户注册
-     * @param phone
+     * @param user
      * @param verifyCode 验证码
-     * @param username
-     * @param password
-     * @param avatar
+     * @param file 头像文件
      * @return 根据用户手机号生成的 token
      */
     @PostMapping("/register")
-    public ResponseEntity<String> register(
-            String phone,
-            String verifyCode,
-            @Size(min = 2, max = 20, message = "用户名应在2~20位") String username,
-            @Size(min = 6, max = 20, message = "密码应在6~20位") String password,
-            MultipartFile avatar) {
-        User user = new User(username, password, phone);
-        return userService.register(user, verifyCode, avatar);
+    public ResponseEntity<String> register(User user, String verifyCode, MultipartFile file) {
+        return userService.register(user, verifyCode, file);
     }
 
     /**

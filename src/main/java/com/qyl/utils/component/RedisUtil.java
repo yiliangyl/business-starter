@@ -1,8 +1,10 @@
 package com.qyl.utils.component;
 
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * @Author: qyl
@@ -21,27 +23,72 @@ public class RedisUtil {
 
         // redis key 的 string 序列化方式
         StringRedisSerializer stringRedisSerializer = new StringRedisSerializer();
-        // redis value 的 json 序列化方式
-        Jackson2JsonRedisSerializer jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer(Object.class);
-
-        /*
-        转换java对象时使用
-        */
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        // 指定要序列化的域 field，get和set以及修饰符范围，ANY是都有包括private和public
-//        objectMapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
-//        // 指定序列化输入的类型，类必须是非final修饰的，final修饰的类，比如String，Integer等会抛出异常
-//        objectMapper.activateDefaultTyping(LaissezFaireSubTypeValidator.instance, ObjectMapper.DefaultTyping.NON_FINAL);
-//        jackson2JsonRedisSerializer.setObjectMapper(objectMapper);
+        // redis value 具有泛型的 json 序列化方式
+        GenericJackson2JsonRedisSerializer genericJackson2JsonRedisSerializer = new GenericJackson2JsonRedisSerializer();
 
         // 序列化string类型
         redisTemplate.setKeySerializer(stringRedisSerializer);
-        redisTemplate.setValueSerializer(jackson2JsonRedisSerializer);
+        redisTemplate.setValueSerializer(genericJackson2JsonRedisSerializer);
 
         // 序列化hash类型
         redisTemplate.setHashKeySerializer(stringRedisSerializer);
-        redisTemplate.setHashValueSerializer(jackson2JsonRedisSerializer);
+        redisTemplate.setHashValueSerializer(genericJackson2JsonRedisSerializer);
 
         return redisTemplate;
+    }
+
+    /**
+     * 设置 string 类型值
+     * @param key
+     * @param value
+     */
+    public static void setValue(String key, Object value) {
+        getRedisTemplate().opsForValue().set(key, value);
+    }
+
+    /**
+     * 设置 string 类型值 + 过期时间
+     * @param key
+     * @param value
+     */
+    public static void setValue(String key, Object value, long timeout, TimeUnit unit) {
+        getRedisTemplate().opsForValue().set(key, value, timeout, unit);
+    }
+
+    /**
+     * 获取 string 类型值
+     * @param key
+     * @return
+     */
+    public static Object getValue(String key) {
+        return getRedisTemplate().opsForValue().get(key);
+    }
+
+    /**
+     * 设置 hash 类型值
+     * @param key
+     * @param hashKey
+     * @param value
+     */
+    public static void putHashValue(String key, Object hashKey, Object value) {
+        getRedisTemplate().opsForHash().put(key, hashKey, value);
+    }
+
+    /**
+     * 获取 hash 类型值
+     * @param key
+     * @param hashKey
+     * @return
+     */
+    public static Object getHashValue(String key, Object hashKey) {
+        return getRedisTemplate().opsForHash().get(key, hashKey);
+    }
+
+    /**
+     * 删除指定缓存
+     * @param key
+     */
+    public static void delete(String key) {
+        getRedisTemplate().delete(key);
     }
 }

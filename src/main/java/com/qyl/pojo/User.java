@@ -48,13 +48,4 @@ public class User {
      * 创建时间
      */
     private Date createTime;
-
-    public User() {
-    }
-
-    public User(String username, String password, String phone) {
-        this.username = username;
-        this.password = password;
-        this.phone = phone;
-    }
 }
