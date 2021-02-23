@@ -22,11 +22,11 @@ public class TokenUtil {
      * @return
      */
     public static String genToken(String phone) {
-        String token;
         Calendar instance = Calendar.getInstance();
         instance.add(Calendar.DATE, 7);  // 默认7天过期
 
-        token = JWT.create()
+        // 生成token
+        String token = JWT.create()
                 .withClaim(PAYLOAD_NAME, phone)
                 .withExpiresAt(instance.getTime())  // 指定token过期时间
                 .sign(Algorithm.HMAC256(signature));
@@ -38,7 +38,7 @@ public class TokenUtil {
      * 验证token
      * 若验证出错将会抛出异常
      * @param token
-     * @return 用户信息(userId)
+     * @return 用户信息 (userPhone)
      */
     public static String verifyToken(String token) {
         return JWT.require(Algorithm.HMAC256(signature))

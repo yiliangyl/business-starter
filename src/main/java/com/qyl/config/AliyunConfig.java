@@ -30,7 +30,7 @@ public class AliyunConfig {
     private String urlPrefix;
 
     @Bean
-    public OSS ossClient() {
+    public OSS oss() {
         return new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
     }
 }

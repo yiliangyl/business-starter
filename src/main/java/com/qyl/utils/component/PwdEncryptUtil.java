@@ -18,9 +18,11 @@ public class PwdEncryptUtil {
      * @return
      * @throws Exception
      */
-    public static String encodeByMD5(String password) throws Exception {
+    public static String encryptByMD5(String password) throws Exception {
         // 确定计算方法
         MessageDigest md5 = MessageDigest.getInstance("MD5");
-        return MD5Encoder.encode(md5.digest(password.getBytes(StandardCharsets.UTF_8)));
+        // 通过MD5加密
+        String encryptPwd = MD5Encoder.encode(md5.digest(password.getBytes(StandardCharsets.UTF_8)));
+        return encryptPwd;
     }
 }

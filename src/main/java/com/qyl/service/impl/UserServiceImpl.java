@@ -48,7 +48,7 @@ public class UserServiceImpl implements UserService {
         try {
             user.setPhone(user.getPhone());
             // 密码加密
-            user.setPassword(PwdEncryptUtil.encodeByMD5(user.getPassword()));
+            user.setPassword(PwdEncryptUtil.encryptByMD5(user.getPassword()));
 
             // 存储头像
             String url = uploadService.uploadAvatar(avatar);
@@ -93,7 +93,7 @@ public class UserServiceImpl implements UserService {
         try {
             User record = new User();
             record.setPhone(phone);
-            record.setPassword(PwdEncryptUtil.encodeByMD5(password));
+            record.setPassword(PwdEncryptUtil.encryptByMD5(password));
             User user = userMapper.selectOne(record);
             if (user != null) {
                 TokenPO tokenPO = new TokenPO(TokenUtil.genToken(phone), user);
