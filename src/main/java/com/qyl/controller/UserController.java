@@ -51,7 +51,6 @@ public class UserController {
      * 发送验证码
      * @param phone
      * @return
-     * @apiNote 测试阶段
      */
     @PostMapping("/send")
     public ResponseEntity<String> sendVerificationCode(
