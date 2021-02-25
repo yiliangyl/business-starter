@@ -40,7 +40,7 @@ src
 │  │        └─ utils	   工具类
 │  └─ resources
 │     ├─ application.yml   通用配置文件
-│     ├─ mapper			   mybatis XML文件
+│     ├─ mapper            mybatis XML文件
 │     └─ static
 │        └─ doc            API文档
 └─ test                    用于生成API文档
