@@ -34,15 +34,16 @@ public class UploadServiceImpl implements UploadService {
     public String uploadAvatar(MultipartFile avatar) {
         String filename = UUID.randomUUID().toString() + "." + IMG_EXT_NAME;
         String filePath = "image/" + filename;
+
+        String url = null;
         try {
             // 存储到oss
             oss.putObject(aliyunConfig.getBucketName(), filePath, new ByteArrayInputStream(avatar.getBytes()));
+            url = aliyunConfig.getUrlPrefix() + filename;
         } catch (IOException e) {
             e.printStackTrace();
-            return null;
         }
         // 返回url
-        String url = aliyunConfig.getUrlPrefix() + filename;
         return url;
     }
 }
