@@ -43,7 +43,7 @@ public class ResponseEntity<T> {
         return response(code, msg, null);
     }
 
-    public static <T> ResponseEntity<T> response(int code, String msg, T data) {
+    private static <T> ResponseEntity<T> response(int code, String msg, T data) {
         return new ResponseEntity<>(code, msg, data);
     }
 }
