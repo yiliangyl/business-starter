@@ -45,27 +45,22 @@ public class UserServiceImpl implements UserService {
             return ResponseEntity.error(ResponseEnum.USER_EXIST.getCode(), ResponseEnum.USER_EXIST.getMsg());
         }
 
-        try {
-            user.setPhone(user.getPhone());
-            // 密码加密
-            user.setPassword(PwdEncryptUtil.encryptByMD5(user.getPassword()));
+        user.setPhone(user.getPhone());
+        // 密码加密
+        user.setPassword(PwdEncryptUtil.encryptByMD5(user.getPassword()));
 
-            // 存储头像
-            String url = uploadService.uploadAvatar(avatar);
-            user.setAvatar(url);
+        // 存储头像
+        String url = uploadService.uploadAvatar(avatar);
+        user.setAvatar(url);
 
-            // 设置用户创建时间
-            user.setCreateTime(new Date());
-            // 写入数据库
-            userMapper.insertSelective(user);
-            RedisUtil.delete(KEY_PREFIX + user.getPhone());
-            // 返回token
-            String token = TokenUtil.genToken(user.getPhone());
-            return ResponseEntity.ok(token);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return ResponseEntity.fail();
+        // 设置用户创建时间
+        user.setCreateTime(new Date());
+        // 写入数据库
+        userMapper.insertSelective(user);
+        RedisUtil.delete(KEY_PREFIX + user.getPhone());
+        // 返回token
+        String token = TokenUtil.genToken(user.getPhone());
+        return ResponseEntity.ok(token);
     }
 
     @Override
