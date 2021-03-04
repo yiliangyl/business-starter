@@ -17,7 +17,7 @@ public class TokenUtil {
     private static final String PAYLOAD_NAME = "user_phone";
 
     /**
-     * 通过用户ID生成token
+     * 通过用户手机号生成 token
      * @param phone
      * @return
      */
@@ -35,7 +35,7 @@ public class TokenUtil {
     }
 
     /**
-     * 验证token
+     * 验证 token
      * 若验证出错将会抛出异常
      * @param token
      * @return 用户信息 (userPhone)
