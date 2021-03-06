@@ -7,7 +7,6 @@ import tk.mybatis.mapper.common.Mapper;
  * @Author: qyl
  * @Date: 2020/12/7 9:49
  */
-@org.apache.ibatis.annotations.Mapper
 public interface UserMapper extends Mapper<User> {
 
     /* 通过用户名获取用户 */
