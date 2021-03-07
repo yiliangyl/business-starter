@@ -39,7 +39,7 @@ public class ResponseEntity<T> {
         return response(ResponseEnum.FAIL.getCode(), ResponseEnum.FAIL.getMsg(), null);
     }
 
-    public static <T> ResponseEntity<T> error(int code, String msg) {
+    public static <T> ResponseEntity<T> fail(int code, String msg) {
         return response(code, msg, null);
     }
 

@@ -30,7 +30,7 @@ public class ValidatorExceptionHandler {
         for (ConstraintViolation<?> constraintViolation : constraintViolations) {
             String msg = constraintViolation.getMessage();
             if (StringUtils.isNotEmpty(msg)) {
-                return ResponseEntity.error(ResponseEnum.FAIL.getCode(), msg);
+                return ResponseEntity.fail(ResponseEnum.FAIL.getCode(), msg);
             }
         }
         return ResponseEntity.fail();

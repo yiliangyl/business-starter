@@ -25,7 +25,7 @@ public class AuthInterceptor implements HandlerInterceptor {
             TokenUtil.verifyToken(token);
             return true;
         } catch (Exception e) {
-            responseEntity = ResponseEntity.error(ResponseEnum.TOKEN_ERROR.getCode(), ResponseEnum.TOKEN_ERROR.getMsg());
+            responseEntity = ResponseEntity.fail(ResponseEnum.TOKEN_ERROR.getCode(), ResponseEnum.TOKEN_ERROR.getMsg());
         }
         // 错误响应以json格式写出
         String json = new ObjectMapper().writeValueAsString(responseEntity);
