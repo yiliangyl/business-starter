@@ -6,7 +6,7 @@ import com.qyl.pojo.PO.TokenPO;
 import com.qyl.pojo.User;
 import com.qyl.service.UploadService;
 import com.qyl.service.UserService;
-import com.qyl.utils.ResponseEntity;
+import com.qyl.utils.ResponseResult;
 import com.qyl.utils.component.RedisUtil;
 import com.qyl.utils.component.VerifyCodeUtil;
 import com.qyl.utils.component.PwdEncryptUtil;
@@ -34,15 +34,15 @@ public class UserServiceImpl implements UserService {
     private static final String KEY_PREFIX = "user:phone:code:";
 
     @Override
-    public ResponseEntity<String> register(User user, String verifyCode, MultipartFile avatar) {
+    public ResponseResult<String> register(User user, String verifyCode, MultipartFile avatar) {
         // 校验验证码
         if (!verifyCode.equals(RedisUtil.getValue(KEY_PREFIX + user.getPhone()))) {
-            return ResponseEntity.fail(ResponseEnum.CODE_IS_INCORRECT.getCode(), ResponseEnum.CODE_IS_INCORRECT.getMsg());
+            return ResponseResult.fail(ResponseEnum.CODE_IS_INCORRECT.getCode(), ResponseEnum.CODE_IS_INCORRECT.getMsg());
         }
 
         // 通过用户名判断用户是否存在
         if (userMapper.selectByName(user.getUsername()) != null) {
-            return ResponseEntity.fail(ResponseEnum.USER_EXIST.getCode(), ResponseEnum.USER_EXIST.getMsg());
+            return ResponseResult.fail(ResponseEnum.USER_EXIST.getCode(), ResponseEnum.USER_EXIST.getMsg());
         }
 
         user.setPhone(user.getPhone());
@@ -60,31 +60,31 @@ public class UserServiceImpl implements UserService {
         RedisUtil.delete(KEY_PREFIX + user.getPhone());
         // 返回token
         String token = TokenUtil.genToken(user.getPhone());
-        return ResponseEntity.ok(token);
+        return ResponseResult.ok(token);
     }
 
     @Override
-    public ResponseEntity<User> queryUserByName(String username) {
+    public ResponseResult<User> queryUserByName(String username) {
         User user = userMapper.selectByName(username);
         if (user != null) {
-            return ResponseEntity.ok(user);
+            return ResponseResult.ok(user);
         }
-        return ResponseEntity.fail();
+        return ResponseResult.fail();
     }
 
     @Override
-    public ResponseEntity<String> sendVerificationCode(String phone) {
+    public ResponseResult<String> sendVerificationCode(String phone) {
         // 通过手机号判断用户是否存在
         if (userMapper.selectByPhone(phone) != null) {
-            return ResponseEntity.fail(ResponseEnum.USER_EXIST.getCode(), ResponseEnum.USER_EXIST.getMsg());
+            return ResponseResult.fail(ResponseEnum.USER_EXIST.getCode(), ResponseEnum.USER_EXIST.getMsg());
         }
         String code = VerifyCodeUtil.generateCode(6);
         RedisUtil.setValue(KEY_PREFIX + phone, code, 5, TimeUnit.MINUTES);
-        return ResponseEntity.ok(code);
+        return ResponseResult.ok(code);
     }
 
     @Override
-    public ResponseEntity<TokenPO> login(String phone, String password) {
+    public ResponseResult<TokenPO> login(String phone, String password) {
         try {
             User record = new User();
             record.setPhone(phone);
@@ -92,11 +92,11 @@ public class UserServiceImpl implements UserService {
             User user = userMapper.selectOne(record);
             if (user != null) {
                 TokenPO tokenPO = new TokenPO(TokenUtil.genToken(phone), user);
-                return ResponseEntity.ok(tokenPO);
+                return ResponseResult.ok(tokenPO);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return ResponseEntity.fail(ResponseEnum.LOGIN_ERROR.getCode(), ResponseEnum.LOGIN_ERROR.getMsg());
+        return ResponseResult.fail(ResponseEnum.LOGIN_ERROR.getCode(), ResponseEnum.LOGIN_ERROR.getMsg());
     }
 }

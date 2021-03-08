@@ -3,7 +3,7 @@ package com.qyl.controller;
 import com.qyl.pojo.PO.TokenPO;
 import com.qyl.pojo.User;
 import com.qyl.service.UserService;
-import com.qyl.utils.ResponseEntity;
+import com.qyl.utils.ResponseResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -33,7 +33,7 @@ public class UserController {
      * @return 根据用户手机号生成的 token
      */
     @PostMapping("/register")
-    public ResponseEntity<String> register(User user, String verifyCode, MultipartFile file) {
+    public ResponseResult<String> register(User user, String verifyCode, MultipartFile file) {
         return userService.register(user, verifyCode, file);
     }
 
@@ -43,7 +43,7 @@ public class UserController {
      * @return
      */
     @GetMapping("/query")
-    public ResponseEntity<User> queryUserByName(String username) {
+    public ResponseResult<User> queryUserByName(String username) {
         return userService.queryUserByName(username);
     }
 
@@ -53,7 +53,7 @@ public class UserController {
      * @return
      */
     @PostMapping("/send")
-    public ResponseEntity<String> sendVerificationCode(
+    public ResponseResult<String> sendVerificationCode(
             @Pattern(regexp = "^1[35678]\\d{9}$", message = "手机格式不正确") String phone) {
         return userService.sendVerificationCode(phone);
     }
@@ -65,7 +65,7 @@ public class UserController {
      * @return
      */
     @PostMapping("/login")
-    public ResponseEntity<TokenPO> login(String phone, String password) {
+    public ResponseResult<TokenPO> login(String phone, String password) {
         return userService.login(phone, password);
     }
 }

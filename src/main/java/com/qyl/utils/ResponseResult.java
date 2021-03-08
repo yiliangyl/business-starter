@@ -3,6 +3,7 @@ package com.qyl.utils;
 import com.qyl.enums.ResponseEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.springframework.http.ResponseEntity;
 
 /**
  * @Author: qyl
@@ -10,7 +11,7 @@ import lombok.Data;
  */
 @Data
 @AllArgsConstructor
-public class ResponseEntity<T> {
+public class ResponseResult<T> {
 
     /**
      * 返回码
@@ -27,23 +28,23 @@ public class ResponseEntity<T> {
      */
     private T data;
 
-    public static <T> ResponseEntity<T> ok() {
+    public static <T> ResponseResult<T> ok() {
         return response(ResponseEnum.SUCCESS.getCode(), ResponseEnum.SUCCESS.getMsg(), null);
     }
 
-    public static <T> ResponseEntity<T> ok(T data) {
+    public static <T> ResponseResult<T> ok(T data) {
         return response(ResponseEnum.SUCCESS.getCode(), ResponseEnum.SUCCESS.getMsg(), data);
     }
 
-    public static <T> ResponseEntity<T> fail() {
+    public static <T> ResponseResult<T> fail() {
         return response(ResponseEnum.FAIL.getCode(), ResponseEnum.FAIL.getMsg(), null);
     }
 
-    public static <T> ResponseEntity<T> fail(int code, String msg) {
+    public static <T> ResponseResult<T> fail(int code, String msg) {
         return response(code, msg, null);
     }
 
-    private static <T> ResponseEntity<T> response(int code, String msg, T data) {
-        return new ResponseEntity<>(code, msg, data);
+    private static <T> ResponseResult<T> response(int code, String msg, T data) {
+        return new ResponseResult<>(code, msg, data);
     }
 }

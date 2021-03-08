@@ -10,7 +10,6 @@ import com.power.doc.model.ApiConfig;
 import com.power.doc.model.ApiErrorCodeDictionary;
 import com.power.doc.model.ApiReqHeader;
 import com.qyl.enums.ResponseEnum;
-import com.qyl.utils.ResponseEntity;
 import org.junit.jupiter.api.Test;
 
 import java.util.Calendar;
