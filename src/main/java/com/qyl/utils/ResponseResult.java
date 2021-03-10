@@ -3,7 +3,6 @@ package com.qyl.utils;
 import com.qyl.enums.ResponseEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.springframework.http.ResponseEntity;
 
 /**
  * @Author: qyl

@@ -7,9 +7,9 @@ import com.qyl.pojo.User;
 import com.qyl.service.UploadService;
 import com.qyl.service.UserService;
 import com.qyl.utils.ResponseResult;
+import com.qyl.utils.component.EncryptUtil;
 import com.qyl.utils.component.RedisUtil;
 import com.qyl.utils.component.VerifyCodeUtil;
-import com.qyl.utils.component.PwdEncryptUtil;
 import com.qyl.utils.component.TokenUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService {
 
         user.setPhone(user.getPhone());
         // 密码加密
-        user.setPassword(PwdEncryptUtil.encryptByMD5(user.getPassword()));
+        user.setPassword(EncryptUtil.encryptByMD5(user.getPassword()));
 
         // 存储头像
         String url = uploadService.uploadAvatar(avatar);
@@ -88,7 +88,7 @@ public class UserServiceImpl implements UserService {
         try {
             User record = new User();
             record.setPhone(phone);
-            record.setPassword(PwdEncryptUtil.encryptByMD5(password));
+            record.setPassword(EncryptUtil.encryptByMD5(password));
             User user = userMapper.selectOne(record);
             if (user != null) {
                 TokenPO tokenPO = new TokenPO(TokenUtil.genToken(phone), user);

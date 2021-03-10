@@ -7,27 +7,27 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 /**
- * 密码加密工具类
+ * 数据加密工具类
  * @Author: qyl
  * @Date: 2021/2/5 11:22
  */
-public class PwdEncryptUtil {
+public class EncryptUtil {
 
     /**
-     * 密码加密
-     * @param password
-     * @return
+     * 数据加密
+     * @param origin 原始数据
+     * @return 加密数据
      */
-    public static String encryptByMD5(String password) {
-        String encryptPwd = "";
+    public static String encryptByMD5(String origin) {
+        String encrypt = "";
         try {
             // 确定计算方法
             MessageDigest md5 = MessageDigest.getInstance("MD5");
             // 通过MD5加密
-            encryptPwd = MD5Encoder.encode(md5.digest(password.getBytes(StandardCharsets.UTF_8)));
+            encrypt = MD5Encoder.encode(md5.digest(origin.getBytes(StandardCharsets.UTF_8)));
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
-        return encryptPwd;
+        return encrypt;
     }
 }
