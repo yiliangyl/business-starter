@@ -64,7 +64,7 @@ public class UserController {
      * @param password
      * @return
      */
-    @PostMapping("/login")
+    @GetMapping("/login")
     public ResponseResult<TokenPO> login(String phone, String password) {
         return userService.login(phone, password);
     }
