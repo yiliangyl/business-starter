@@ -37,7 +37,7 @@ public class RedisCache implements Cache {
     @Override
     public void putObject(Object key, Object value) {
         log.info("缓存key:[{}], 缓存value:[{}]", key.toString(), value);
-        RedisUtil.putHashValue(id, key.toString(), value);
+        RedisUtil.putValue(id, key.toString(), value);
     }
 
     /**
@@ -48,7 +48,7 @@ public class RedisCache implements Cache {
     @Override
     public Object getObject(Object key) {
         log.info("获取缓存key:[{}]", key.toString());
-        return RedisUtil.getHashValue(id, key.toString());
+        return RedisUtil.getValue(id, key.toString());
     }
 
     @Override

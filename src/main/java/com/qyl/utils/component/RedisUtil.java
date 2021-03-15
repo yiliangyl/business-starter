@@ -70,7 +70,7 @@ public class RedisUtil {
      * @param hashKey
      * @param value
      */
-    public static void putHashValue(String key, Object hashKey, Object value) {
+    public static void putValue(String key, Object hashKey, Object value) {
         getRedisTemplate().opsForHash().put(key, hashKey, value);
     }
 
@@ -80,7 +80,7 @@ public class RedisUtil {
      * @param hashKey
      * @return
      */
-    public static Object getHashValue(String key, Object hashKey) {
+    public static Object getValue(String key, Object hashKey) {
         return getRedisTemplate().opsForHash().get(key, hashKey);
     }
 
