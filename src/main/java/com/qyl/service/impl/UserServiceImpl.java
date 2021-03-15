@@ -7,10 +7,7 @@ import com.qyl.pojo.User;
 import com.qyl.service.UploadService;
 import com.qyl.service.UserService;
 import com.qyl.utils.ResponseResult;
-import com.qyl.utils.component.EncryptUtil;
-import com.qyl.utils.component.RedisUtil;
-import com.qyl.utils.component.VerifyCodeUtil;
-import com.qyl.utils.component.TokenUtil;
+import com.qyl.utils.component.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -31,12 +28,10 @@ public class UserServiceImpl implements UserService {
     @Resource
     private UploadService uploadService;
 
-    private static final String KEY_PREFIX = "user:phone:code:";
-
     @Override
     public ResponseResult<String> register(User user, String verifyCode, MultipartFile avatar) {
         // 校验验证码
-        if (!verifyCode.equals(RedisUtil.getValue(KEY_PREFIX + user.getPhone()))) {
+        if (!verifyCode.equals(RedisUtil.getValue(RedisKey.USER_PHONE_CODE + user.getPhone()))) {
             return ResponseResult.fail(ResponseEnum.CODE_IS_INCORRECT.getCode(), ResponseEnum.CODE_IS_INCORRECT.getMsg());
         }
 
@@ -57,7 +52,7 @@ public class UserServiceImpl implements UserService {
         user.setCreateTime(new Date());
         // 写入数据库
         userMapper.insertSelective(user);
-        RedisUtil.delete(KEY_PREFIX + user.getPhone());
+        RedisUtil.delete(RedisKey.USER_PHONE_CODE + user.getPhone());
         // 返回token
         String token = TokenUtil.genToken(user.getPhone());
         return ResponseResult.ok(token);
@@ -79,7 +74,7 @@ public class UserServiceImpl implements UserService {
             return ResponseResult.fail(ResponseEnum.USER_EXIST.getCode(), ResponseEnum.USER_EXIST.getMsg());
         }
         String code = VerifyCodeUtil.generateCode(6);
-        RedisUtil.setValue(KEY_PREFIX + phone, code, 5, TimeUnit.MINUTES);
+        RedisUtil.setValue(RedisKey.USER_PHONE_CODE + phone, code, 5, TimeUnit.MINUTES);
         return ResponseResult.ok(code);
     }
 
