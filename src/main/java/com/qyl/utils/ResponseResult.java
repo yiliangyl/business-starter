@@ -43,6 +43,10 @@ public class ResponseResult<T> {
         return response(code, msg, null);
     }
 
+    public static <T> ResponseResult<T> fail(ResponseEnum responseEnum) {
+        return response(responseEnum.getCode(), responseEnum.getMsg(), null);
+    }
+
     private static <T> ResponseResult<T> response(int code, String msg, T data) {
         return new ResponseResult<>(code, msg, data);
     }

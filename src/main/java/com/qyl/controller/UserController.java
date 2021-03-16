@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-import javax.validation.constraints.Pattern;
 
 /**
  * 用户相关接口
@@ -53,8 +52,7 @@ public class UserController {
      * @return
      */
     @PostMapping("/send")
-    public ResponseResult<String> sendVerificationCode(
-            @Pattern(regexp = "^1[35678]\\d{9}$", message = "手机格式不正确") String phone) {
+    public ResponseResult<String> sendVerificationCode(String phone) {
         return userService.sendVerificationCode(phone);
     }
 

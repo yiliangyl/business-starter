@@ -32,12 +32,12 @@ public class UserServiceImpl implements UserService {
     public ResponseResult<String> register(User user, String verifyCode, MultipartFile avatar) {
         // 校验验证码
         if (!verifyCode.equals(RedisUtil.getValue(RedisKey.USER_PHONE_CODE + user.getPhone()))) {
-            return ResponseResult.fail(ResponseEnum.CODE_IS_INCORRECT.getCode(), ResponseEnum.CODE_IS_INCORRECT.getMsg());
+            return ResponseResult.fail(ResponseEnum.CODE_IS_INCORRECT);
         }
 
         // 通过用户名判断用户是否存在
         if (userMapper.selectByName(user.getUsername()) != null) {
-            return ResponseResult.fail(ResponseEnum.USER_EXIST.getCode(), ResponseEnum.USER_EXIST.getMsg());
+            return ResponseResult.fail(ResponseEnum.USER_EXIST);
         }
 
         user.setPhone(user.getPhone());
@@ -71,7 +71,7 @@ public class UserServiceImpl implements UserService {
     public ResponseResult<String> sendVerificationCode(String phone) {
         // 通过手机号判断用户是否存在
         if (userMapper.selectByPhone(phone) != null) {
-            return ResponseResult.fail(ResponseEnum.USER_EXIST.getCode(), ResponseEnum.USER_EXIST.getMsg());
+            return ResponseResult.fail(ResponseEnum.USER_EXIST);
         }
         String code = VerifyCodeUtil.generateCode(6);
         RedisUtil.setValue(RedisKey.USER_PHONE_CODE + phone, code, 5, TimeUnit.MINUTES);
@@ -92,6 +92,6 @@ public class UserServiceImpl implements UserService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return ResponseResult.fail(ResponseEnum.LOGIN_ERROR.getCode(), ResponseEnum.LOGIN_ERROR.getMsg());
+        return ResponseResult.fail(ResponseEnum.LOGIN_ERROR);
     }
 }
