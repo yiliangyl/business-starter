@@ -16,7 +16,6 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.lang.reflect.Method;
 
 /**
  * @Author: qyl
@@ -29,16 +28,28 @@ public class AuthInterceptor implements HandlerInterceptor {
     @Resource
     private UserMapper userMapper;
 
+    /**
+     * 预处理：拦截请求
+     * @param request
+     * @param response
+     * @param handler
+     * @return
+     * @throws Exception
+     */
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         // 从请求头中获取token
         String token = request.getHeader("token");
 
         HandlerMethod handlerMethod = (HandlerMethod) handler;
-        Method method = handlerMethod.getMethod();
+        // 获取方法上的注解
+        TokenRequired tokenRequired = handlerMethod.getMethod().getAnnotation(TokenRequired.class);
+        // 如果方法上的注解为空，则获取类的注解
+        if (tokenRequired == null) {
+            tokenRequired = handlerMethod.getMethod().getDeclaringClass().getAnnotation(TokenRequired.class);
+        }
         // 检查是否有 TokenRequired 注解
-        if (method.isAnnotationPresent(TokenRequired.class)) {
-            TokenRequired tokenRequired = method.getAnnotation(TokenRequired.class);
+        if (tokenRequired != null) {
             if (tokenRequired.required()) {
                 // 执行认证
                 if (StringUtils.isEmpty(token)) {
