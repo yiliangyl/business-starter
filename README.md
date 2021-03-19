@@ -26,7 +26,7 @@ src
 │  │  └─ com
 │  │     └─ qyl
 │  │        ├─ BusinessStarterApplication.java  项目主启动类
-│  │        ├─ annotation  注解
+│  │        ├─ annotation  自定义注解
 │  │        ├─ cache  	   Redis缓存
 │  │        ├─ config      配置类
 │  │        ├─ controller  controller层
@@ -36,7 +36,7 @@ src
 │  │        ├─ pojo        实体类
 │  │        ├─ service     service层
 │  │        │  └─ impl     service层实现类
-│  │        └─ utils	   工具类
+│  │        └─ utils	     工具类
 │  └─ resources
 │     ├─ application.yml   通用配置文件
 │     ├─ mapper            mybatis XML文件
