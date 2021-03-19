@@ -14,7 +14,7 @@ import javax.annotation.Resource;
  * 用户相关接口
  * @Author: qyl
  * @Date: 2020/12/7 9:53
- * @Description: 用户相关接口
+ * @Description:
  */
 @RestController
 @RequestMapping("/user")
@@ -28,7 +28,7 @@ public class UserController {
      * @param user
      * @param verifyCode 验证码
      * @param file 头像文件
-     * @return 根据用户手机号生成的 token
+     * @return 根据用户ID生成的 token
      */
     @PostMapping("/register")
     public ResponseResult<String> register(User user, String verifyCode, MultipartFile file) {

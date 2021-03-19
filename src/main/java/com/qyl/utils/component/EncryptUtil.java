@@ -22,4 +22,14 @@ public class EncryptUtil {
     public static String encryptByMD5(String origin) {
         return DigestUtils.md5DigestAsHex((origin + SALT).getBytes());
     }
+
+    /**
+     * 匹配数据
+     * @param origin 原始数据
+     * @param encrypt 加密数据
+     * @return
+     */
+    public static boolean match(String origin, String encrypt) {
+        return encryptByMD5(origin).equals(encrypt);
+    }
 }

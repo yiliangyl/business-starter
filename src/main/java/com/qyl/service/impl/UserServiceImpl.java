@@ -45,8 +45,8 @@ public class UserServiceImpl implements UserService {
         user.setPassword(EncryptUtil.encryptByMD5(user.getPassword()));
 
         // 存储头像
-//        String url = uploadService.uploadAvatar(avatar);
-//        user.setAvatar(url);
+        String url = uploadService.uploadAvatar(avatar);
+        user.setAvatar(url);
 
         // 设置用户创建时间
         user.setCreateTime(new Date());
@@ -64,7 +64,7 @@ public class UserServiceImpl implements UserService {
         if (user != null) {
             return ResponseResult.ok(user);
         }
-        return ResponseResult.fail();
+        return ResponseResult.fail(ResponseEnum.USER_NOT_FOUND.getCode(), ResponseEnum.USER_NOT_FOUND.getMsg());
     }
 
     @Override
@@ -81,7 +81,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResponseResult<TokenPO> login(String phone, String password) {
         User user = userMapper.selectUserByPhone(phone);
-        if (user != null && EncryptUtil.encryptByMD5(password).equals(user.getPassword())) {
+        if (user != null && EncryptUtil.match(password, user.getPassword())) {
             TokenPO tokenPO = new TokenPO(TokenUtil.genToken(String.valueOf(user.getUserId())), user);
             return ResponseResult.ok(tokenPO);
         }
