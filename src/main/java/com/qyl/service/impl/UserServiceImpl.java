@@ -32,12 +32,12 @@ public class UserServiceImpl implements UserService {
     public ResponseResult<String> register(User user, String verifyCode, MultipartFile avatar) {
         // 校验验证码
         if (!verifyCode.equals(RedisUtil.getValue(RedisKey.USER_PHONE_CODE + user.getPhone()))) {
-            return ResponseResult.fail(ResponseEnum.CODE_IS_INCORRECT);
+            return ResponseResult.fail(ResponseEnum.CODE_IS_INCORRECT.getCode(), ResponseEnum.CODE_IS_INCORRECT.getMsg());
         }
 
         // 通过用户名判断用户是否存在
-        if (userMapper.selectByName(user.getUsername()) != null) {
-            return ResponseResult.fail(ResponseEnum.USER_EXIST);
+        if (userMapper.selectUserByName(user.getUsername()) != null) {
+            return ResponseResult.fail(ResponseEnum.USER_EXIST.getCode(), ResponseEnum.USER_EXIST.getMsg());
         }
 
         user.setPhone(user.getPhone());
@@ -45,22 +45,22 @@ public class UserServiceImpl implements UserService {
         user.setPassword(EncryptUtil.encryptByMD5(user.getPassword()));
 
         // 存储头像
-        String url = uploadService.uploadAvatar(avatar);
-        user.setAvatar(url);
+//        String url = uploadService.uploadAvatar(avatar);
+//        user.setAvatar(url);
 
         // 设置用户创建时间
         user.setCreateTime(new Date());
         // 写入数据库
-        userMapper.insertSelective(user);
+        userMapper.insertUser(user);
         RedisUtil.delete(RedisKey.USER_PHONE_CODE + user.getPhone());
         // 返回token
-        String token = TokenUtil.genToken(user.getPhone());
+        String token = TokenUtil.genToken(String.valueOf(user.getUserId()));
         return ResponseResult.ok(token);
     }
 
     @Override
     public ResponseResult<User> queryUserByName(String username) {
-        User user = userMapper.selectByName(username);
+        User user = userMapper.selectUserByName(username);
         if (user != null) {
             return ResponseResult.ok(user);
         }
@@ -70,8 +70,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResponseResult<String> sendVerificationCode(String phone) {
         // 通过手机号判断用户是否存在
-        if (userMapper.selectByPhone(phone) != null) {
-            return ResponseResult.fail(ResponseEnum.USER_EXIST);
+        if (userMapper.selectUserByPhone(phone) != null) {
+            return ResponseResult.fail(ResponseEnum.USER_EXIST.getCode(), ResponseEnum.USER_EXIST.getMsg());
         }
         String code = VerifyCodeUtil.generateCode(6);
         RedisUtil.setValue(RedisKey.USER_PHONE_CODE + phone, code, 5, TimeUnit.MINUTES);
@@ -80,18 +80,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseResult<TokenPO> login(String phone, String password) {
-        try {
-            User record = new User();
-            record.setPhone(phone);
-            record.setPassword(EncryptUtil.encryptByMD5(password));
-            User user = userMapper.selectOne(record);
-            if (user != null) {
-                TokenPO tokenPO = new TokenPO(TokenUtil.genToken(phone), user);
-                return ResponseResult.ok(tokenPO);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        User user = userMapper.selectUserByPhone(phone);
+        if (user != null && EncryptUtil.encryptByMD5(password).equals(user.getPassword())) {
+            TokenPO tokenPO = new TokenPO(TokenUtil.genToken(String.valueOf(user.getUserId())), user);
+            return ResponseResult.ok(tokenPO);
         }
-        return ResponseResult.fail(ResponseEnum.LOGIN_ERROR);
+        return ResponseResult.fail(ResponseEnum.LOGIN_ERROR.getCode(), ResponseEnum.LOGIN_ERROR.getMsg());
     }
 }

@@ -9,11 +9,9 @@
 ## 特点
 
 - 接口均为 RESTful 风格，支持前后端分离
-
-- 数据库 CRUD 操作均可通过 tk.mybatis 来实现，无需再手动编写
 - 封装统一响应结果以及统一响应码
 - 使用 JWT 生成 token 以及验证 token，并使用拦截器来拦截无正确 token 的请求
-- 使用 hibernate-validator 来验证字段，并使用统一异常处理结果
+- 使用注解的方式来拦截需要拦截的请求
 - 封装 RedisUtil 工具类来实现缓存
 - 使用 smart-doc 通过 javadoc 自动生成 API 文档
 

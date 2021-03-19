@@ -10,9 +10,11 @@ public enum ResponseEnum {
 
     // 用户模块错误
     USER_EXIST(1001, "用户已存在"),
-    CODE_IS_INCORRECT(1002, "验证码不正确"),
-    LOGIN_ERROR(1003, "手机号或密码错误"),
-    TOKEN_ERROR(1004, "token出错"),
+    USER_NOT_FOUND(1002, "用户不存在"),
+    CODE_IS_INCORRECT(1003, "验证码不正确"),
+    LOGIN_ERROR(1004, "手机号或密码错误"),
+    TOKEN_EMPTY(1005, "token为空"),
+    TOKEN_EXPIRED(1006, "token已过期"),
     ;
 
     /**

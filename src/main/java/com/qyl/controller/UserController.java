@@ -1,10 +1,10 @@
 package com.qyl.controller;
 
+import com.qyl.annotation.TokenRequired;
 import com.qyl.pojo.PO.TokenPO;
 import com.qyl.pojo.User;
 import com.qyl.service.UserService;
 import com.qyl.utils.ResponseResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,7 +18,6 @@ import javax.annotation.Resource;
  */
 @RestController
 @RequestMapping("/user")
-@Validated
 public class UserController {
 
     @Resource
@@ -42,6 +41,7 @@ public class UserController {
      * @return
      */
     @GetMapping("/query")
+    @TokenRequired
     public ResponseResult<User> queryUserByName(String username) {
         return userService.queryUserByName(username);
     }

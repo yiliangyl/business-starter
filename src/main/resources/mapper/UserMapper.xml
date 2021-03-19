@@ -6,12 +6,26 @@
 <mapper namespace="com.qyl.mapper.UserMapper">
     <!--<cache type="com.qyl.cache.RedisCache" />-->
 
-    <select id="selectByName" parameterType="java.lang.String" resultType="User">
-        select * from user where username = #{username} limit 1;
+    <select id="selectUserByName" parameterType="java.lang.String" resultType="User">
+        select user_id, username, password, phone, avatar, create_time
+        from user
+        where username = #{username} limit 1;
     </select>
 
-    <select id="selectByPhone" parameterType="java.lang.String" resultType="User">
-        select * from user where phone = #{phone} limit 1;
+    <select id="selectUserByPhone" parameterType="java.lang.String" resultType="User">
+        select user_id, username, password, phone, avatar, create_time
+        from user
+        where phone = #{phone} limit 1;
     </select>
 
+    <select id="selectUserById" parameterType="java.lang.Integer" resultType="User">
+        select user_id, username, password, phone, create_time
+        from user
+        where user_id = #{userId} limit 1;
+    </select>
+
+    <insert id="insertUser" parameterType="User" useGeneratedKeys="true" keyProperty="userId">
+        insert into user
+        values (#{userId}, #{username}, #{password}, #{phone}, #{avatar}, #{createTime});
+    </insert>
 </mapper>
