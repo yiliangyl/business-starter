@@ -36,7 +36,7 @@ src
 │  │        ├─ pojo        实体类
 │  │        ├─ service     service层
 │  │        │  └─ impl     service层实现类
-│  │        └─ utils	     工具类
+│  │        └─ utils	   工具类
 │  └─ resources
 │     ├─ application.yml   通用配置文件
 │     ├─ mapper            mybatis XML文件
