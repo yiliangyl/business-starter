@@ -26,6 +26,7 @@ src
 │  │  └─ com
 │  │     └─ qyl
 │  │        ├─ BusinessStarterApplication.java  项目主启动类
+│  │        ├─ annotation  注解
 │  │        ├─ cache  	   Redis缓存
 │  │        ├─ config      配置类
 │  │        ├─ controller  controller层
